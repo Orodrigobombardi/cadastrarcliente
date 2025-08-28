@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Banco de Dados</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #6dd5ed 0%, #f4f6fa 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 420px;
+            background: rgba(255,255,255,0.95);
+            padding: 40px 32px 32px 32px;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.15);
+            text-align: center;
+            position: relative;
+            animation: fadeIn 1.2s ease;
+            margin: auto 0;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .icon {
+            font-size: 3.5rem;
+            color: #2d89ef;
+            margin-bottom: 12px;
+            animation: bounce 1.5s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-12px); }
+        }
+        h1 {
+            color: #2d3e50;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        p {
+            color: #555;
+            margin-bottom: 28px;
+            font-size: 1.08rem;
+             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        .btn {
+            background: linear-gradient(90deg, #2d89ef 60%, #6dd5ed 100%);
+            color: #fff;
+            border: none;
+            padding: 14px 38px;
+            border-radius: 8px;
+            font-size: 1.08rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(44,62,80,0.10);
+            transition: background 0.2s, transform 0.2s;
+             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #1b5fa7 60%, #2d89ef 100%);
+            transform: scale(1.05);
+        }
+        .footer {
+            width: 100%;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            text-align: center;
+            color: #888;
+            font-size: 0.95rem;
+            background: rgba(255,255,255,0.85);
+            padding: 12px 0 8px 0;
+            box-shadow: 0 -2px 8px rgba(44,62,80,0.05);
+             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🔎</div>
+        <h1>Consulta de Banco de Dados</h1>
+        <p>CONSULTE TUDO O QUE SEUS CLIENTES CONTEM DE DADOS COM VOCÊ !</p>
+    <button class="btn" style="margin-bottom: 16px;" onclick="window.location.href='cadastro.html'">CADASTRAR CLIENTE</button>
+    <button class="btn" onclick="window.location.href='http://127.0.0.1:3000/consultabanco.html'">IR À PÁGINA DE CONSULTAS</button>
+    </div>
+    <div class="footer">Todos os direitos reservados &copy; @Rodrigo Bombardi 2025</div>
+</body>
+</html>
