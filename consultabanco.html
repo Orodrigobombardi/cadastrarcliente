@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Cliente</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #6dd5ed 0%, #f4f6fa 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 32px 0 0 0;
+        }
+        .title {
+            color: #2d3e50;
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(44,62,80,0.10);
+        }
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+            padding: 44px 36px 32px 36px;
+            max-width: 440px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1.2s ease;
+            border: 2px solid #2d89ef22;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .label {
+            color: #2d89ef;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1.5px solid #cfd8dc;
+            font-size: 1.08rem;
+            margin-bottom: 22px;
+            background: #f4f6fa;
+            color: #2d3e50;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+        }
+        .buton {
+            background: linear-gradient(90deg, #2d89ef 60%, #6dd5ed 100%);
+            color: #fff;
+            border: none;
+            padding: 16px 44px;
+            border-radius: 10px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(44,62,80,0.12);
+            transition: background 0.2s, transform 0.2s;
+            margin-top: 8px;
+        }
+        .buton:hover {
+            background: linear-gradient(90deg, #1b5fa7 60%, #2d89ef 100%);
+            transform: scale(1.06);
+        }
+        .icon {
+            font-size: 3.2rem;
+            color: #2d89ef;
+            margin-bottom: 18px;
+            animation: bounce 1.5s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        .footer {
+            background-color: #2d3e50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="icon">📄</span>
+        <h1 class="title">Gerar PDF de Cliente</h1>
+        <div class="card">
+            <label for="selectCliente" class="label">Selecione o cliente:</label>
+            <select id="selectCliente" class="select"></select>
+            <button class="buton" id="btnPDF" onclick="gerarPDFCliente()">Gerar PDF do Cliente Selecionado</button>
+        </div>
+    </div>
+    <footer class="footer">
+        Todos os direitos reservados &copy; @Rodrigo Bombardi 2025
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function preencherSelectClientes() {
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            const select = document.getElementById('selectCliente');
+            select.innerHTML = '';
+            if (clientes.length === 0) {
+                select.innerHTML = '<option value="">Nenhum cliente cadastrado</option>';
+                document.getElementById('btnPDF').disabled = true;
+                return;
+            }
+            clientes.forEach((cliente, idx) => {
+                select.innerHTML += `<option value="${idx}">${cliente.nome} - ${cliente.cpf}</option>`;
+            });
+            document.getElementById('btnPDF').disabled = false;
+        }
+
+        function gerarPDFCliente() {
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            const select = document.getElementById('selectCliente');
+            const idx = select.value;
+            if (!clientes[idx]) {
+                alert('Selecione um cliente válido.');
+                return;
+            }
+            const cliente = clientes[idx];
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            // Cabeçalho visual
+            doc.setFillColor(45, 137, 239);
+            doc.rect(0, 0, 210, 28, 'F');
+            doc.setFontSize(22);
+            doc.setTextColor(255,255,255);
+            doc.text('Ficha do Cliente', 105, 18, {align: 'center'});
+            doc.setFontSize(12);
+            doc.setTextColor(44,62,80);
+            // Ícone
+            doc.text('📄', 190, 18, {align: 'center'});
+            // Dados
+            let y = 40;
+            doc.setFontSize(14);
+            Object.entries(cliente).forEach(([key, value]) => {
+                let label = '';
+                switch(key) {
+                    case 'nome': label = 'Nome'; break;
+                    case 'cpf': label = 'CPF'; break;
+                    case 'email': label = 'E-mail'; break;
+                    case 'telefone': label = 'Telefone'; break;
+                    case 'endereco': label = 'Endereço'; break;
+                    case 'cidade': label = 'Cidade'; break;
+                    case 'estado': label = 'Estado'; break;
+                    case 'nascimento': label = 'Nascimento'; break;
+                    default: label = key;
+                }
+                doc.setFont(undefined, 'bold');
+                doc.text(`${label}:`, 20, y);
+                doc.setFont(undefined, 'normal');
+                doc.text(`${value}`, 60, y);
+                y += 12;
+            });
+            // Borda
+            doc.setDrawColor(45,137,239);
+            doc.setLineWidth(1.2);
+            doc.rect(10, 32, 190, y-32+6);
+            // Rodapé
+            doc.setFontSize(10);
+            doc.setTextColor(120,120,120);
+            doc.text('Gerado por Consulta de Banco de Dados | @Rodrigo Bombardi 2025', 105, 285, {align: 'center'});
+            doc.save(`cliente_${cliente.nome.replace(/\s+/g,'_')}.pdf`);
+        }
+
+        window.onload = preencherSelectClientes;
+    </script>
+</body>
+</html>
